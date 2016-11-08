@@ -43,7 +43,6 @@ class RequestCore{
 
         $response = curl_exec($this->ch);                               //执行操作
         $code = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);            //获取返回的状态码
-        curl_close($this->ch);                                          //关闭CURL会话
         if($code == '200'){
             $response = new ResponseCore($response);
             return $response->getData();
@@ -52,5 +51,10 @@ class RequestCore{
             $message_array = $response->getData();
             throw new Exception($message_array['message']);
         }
+    }
+
+    public function __destruct()
+    {
+        curl_close($this->ch);
     }
 }
