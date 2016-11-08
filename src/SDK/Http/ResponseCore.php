@@ -10,9 +10,6 @@ class ResponseCore{
     }
 
     public function getData(){
-        $data_array = json_decode($this->data, true);
-        if(is_array($data_array)){
-            return $data_array;
-        }
+        return json_decode($this->data, true);
     }
 }

@@ -4,14 +4,11 @@ namespace SDK;
 
 use SDK\Http\RequestCore;
 use SDK\Model\Auth;
-use SDK\Model\AlbumList;
-use SDK\Model\AlbumInfo;
-use SDK\Model\PictureList;
-use SDK\Model\PictureInfo;
-use SDK\Model\FolderList;
-use SDK\Model\FolderInfo;
-use SDK\Model\FileList;
-use SDK\Model\FileInfo;
+use SDK\Model\Album;
+use SDK\Model\Picture;
+use SDK\Model\Folder;
+use SDK\Model\File;
+use Exception;
 
 class Client{
     private $host;
@@ -36,7 +33,7 @@ class Client{
     }
 
     /**
-     * 用来检查SDK所以来的扩展是否打开
+     * 用来检查SDK所用的扩展是否打开
      *
      * @throws OssException
      */
@@ -68,8 +65,8 @@ class Client{
         $url = Auth::getApiUrl($this->host);
         $data = array('email' => $this->email, 'password' => $this->password);
 
-        $request = new RequestCore($url);
-        $response_data = $request->send($data);
+        $request = new RequestCore($url, 'post');
+        $response_data = $request->processRequest($data);
         $this->token = $response_data['token'] ? $response_data['token'] : '';
     }
 
@@ -78,10 +75,24 @@ class Client{
      */
     public function listAlbums()
     {
-        $url = AlbumList::getApiUrl($this->host, $this->token);
+        $url = Album::getApiUrl($this->host, $this->token);
+        $data = array();
 
         $request = new RequestCore($url, 'get');
-        $response_data = $request->send();
+        $response_data = $request->processRequest($data);
+        return $response_data;
+    }
+
+    /**
+     * 增加新相册
+     */
+    public function addAlbum($name, $description)
+    {
+        $url = Album::getApiUrl($this->host, $this->token);
+        $data = array('name' => $name, 'description' => $description);
+
+        $request = new RequestCore($url, 'post');
+        $response_data = $request->processRequest($data);
         return $response_data;
     }
 
@@ -90,10 +101,37 @@ class Client{
      */
     public function infoAlbum($id)
     {
-        $url = AlbumInfo::getApiUrl($id, $this->host, $this->token);
+        $url = Album::getApiInfoUrl($id, $this->host, $this->token);
+        $data = array();
 
         $request = new RequestCore($url, 'get');
-        $response_data = $request->send();
+        $response_data = $request->processRequest($data);
+        return $response_data;
+    }
+
+    /**
+     * 更改相册信息
+     */
+    public function updateAlbum($id, $name, $description)
+    {
+        $url = Album::getApiInfoUrl($id, $this->host, $this->token);
+        $data = array('name' => $name, 'description' => $description);
+
+        $request = new RequestCore($url, 'put');
+        $response_data = $request->processRequest($data);
+        return $response_data;
+    }
+
+    /**
+     * 删除指定的相册
+     */
+    public function deleteAlbum($id)
+    {
+        $url = Album::getApiInfoUrl($id, $this->host, $this->token);
+        $data = array();
+
+        $request = new RequestCore($url, 'delete');
+        $response_data = $request->processRequest($data);
         return $response_data;
     }
 
@@ -102,10 +140,11 @@ class Client{
      */
     public function listPictures()
     {
-        $url = PictureList::getApiUrl($this->host, $this->token);
+        $url = Picture::getApiUrl($this->host, $this->token);
+        $data = array();
 
         $request = new RequestCore($url, 'get');
-        $response_data = $request->send();
+        $response_data = $request->processRequest($data);
         return $response_data;
     }
 
@@ -114,10 +153,11 @@ class Client{
      */
     public function infoPicture($id)
     {
-        $url = PictureInfo::getApiUrl($id, $this->host, $this->token);
+        $url = Picture::getApiInfoUrl($id, $this->host, $this->token);
+        $data = array();
 
         $request = new RequestCore($url, 'get');
-        $response_data = $request->send();
+        $response_data = $request->processRequest($data);
         return $response_data;
     }
 
@@ -126,10 +166,11 @@ class Client{
      */
     public function listFolders()
     {
-        $url = FolderList::getApiUrl($this->host, $this->token);
+        $url = Folder::getApiUrl($this->host, $this->token);
+        $data = array();
 
         $request = new RequestCore($url, 'get');
-        $response_data = $request->send();
+        $response_data = $request->processRequest($data);
         return $response_data;
     }
 
@@ -138,10 +179,11 @@ class Client{
      */
     public function infoFolder($id)
     {
-        $url = FolderInfo::getApiUrl($id, $this->host, $this->token);
+        $url = Folder::getApiInfoUrl($id, $this->host, $this->token);
+        $data = array();
 
         $request = new RequestCore($url, 'get');
-        $response_data = $request->send();
+        $response_data = $request->processRequest($data);
         return $response_data;
     }
 
@@ -150,10 +192,11 @@ class Client{
      */
     public function listFiles()
     {
-        $url = FileList::getApiUrl($this->host, $this->token);
+        $url = File::getApiUrl($this->host, $this->token);
+        $data = array();
 
         $request = new RequestCore($url, 'get');
-        $response_data = $request->send();
+        $response_data = $request->processRequest($data);
         return $response_data;
     }
 
@@ -162,10 +205,11 @@ class Client{
      */
     public function infoFile($id)
     {
-        $url = FileInfo::getApiUrl($id, $this->host, $this->token);
+        $url = File::getApiInfoUrl($id, $this->host, $this->token);
+        $data = array();
 
         $request = new RequestCore($url, 'get');
-        $response_data = $request->send();
+        $response_data = $request->processRequest($data);
         return $response_data;
     }
 }
