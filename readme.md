@@ -1,5 +1,5 @@
 # sdk
-针对http://manage.mark-here.com/ API编写的简单SDK实现
+针对http://manage.mark-here.com/ API编写的SDK
 
 # 使用方法
 ```php
@@ -24,6 +24,16 @@ $result = $client->updateAlbum('3', 'mark的私人相册', '测试相册的简�
 print_r($result);
 
 $result = $client->listPictures();
+print_r($result);
+
+$data = array('album_id' => 0);
+$result = $client->addPicture($data, 'D:\wamp\www\sdk\test.jpg');
+print_r($result);
+
+$result = $client->deletePicture('4');
+print_r($result);
+
+$result = $client->movePictureToAlbum('4', '0');
 print_r($result);
 
 $result = $client->infoPicture('2');
