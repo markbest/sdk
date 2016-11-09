@@ -37,3 +37,13 @@ print_r($result);
 
 $result = $client->infoFile('8');
 print_r($result);
+
+$data = array('album_id' => 0);
+$result = $client->addPicture($data, 'D:\wamp\www\sdk\test.jpg');
+print_r($result);
+
+$result = $client->deletePicture('4');
+print_r($result);
+
+$result = $client->movePictureToAlbum('4', '0');
+print_r($result);

@@ -35,7 +35,7 @@ class Client{
     /**
      * 用来检查SDK所用的扩展是否打开
      *
-     * @throws OssException
+     * @throws Exception
      */
     public static function checkEnv()
     {
@@ -149,6 +149,18 @@ class Client{
     }
 
     /**
+     * 增加新图片
+     */
+    public function addPicture($data, $filepath)
+    {
+        $url = Picture::getApiUrl($this->host, $this->token);
+
+        $request = new RequestCore($url, 'post');
+        $response_data = $request->processRequest($data, $filepath);
+        return $response_data;
+    }
+
+    /**
      * 获取图片id的详细信息
      */
     public function infoPicture($id)
@@ -157,6 +169,32 @@ class Client{
         $data = array();
 
         $request = new RequestCore($url, 'get');
+        $response_data = $request->processRequest($data);
+        return $response_data;
+    }
+
+    /**
+     * 删除指定的图片
+     */
+    public function deletePicture($id)
+    {
+        $url = Picture::getApiInfoUrl($id, $this->host, $this->token);
+        $data = array();
+
+        $request = new RequestCore($url, 'delete');
+        $response_data = $request->processRequest($data);
+        return $response_data;
+    }
+
+    /**
+     * 移动图片到指定的相册
+     */
+    public function movePictureToAlbum($id, $albun_id)
+    {
+        $url = Picture::getMoveApiUrl($this->host, $this->token);
+        $data = array('picture_id' => $id, 'album_id' => $albun_id);
+
+        $request = new RequestCore($url, 'post');
         $response_data = $request->processRequest($data);
         return $response_data;
     }
