@@ -7,7 +7,7 @@ require_once 'autoload.php';
 
 use SDK\Client;  
 
-$client = new Client('http://manage.mark-here.com/api/', 'admin@admin.com', '123456');
+$client = new Client('http://filebox.markbest.site/', 'user', 'password');
 $result = $client->addAlbum('测试相册', '测试相册的简单描述');  //post
 print_r($result);
 
